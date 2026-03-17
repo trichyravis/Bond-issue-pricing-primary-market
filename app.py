@@ -625,14 +625,21 @@ except:
 curr_sym = "₹" if "INR" in currency else "$" if currency=="USD" else "€" if currency=="EUR" else "£"
 
 # ── TABS ──────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+# ── ROW 1: Core pricing tabs ──────────────────────────────────────────────────
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📌 Pricing Summary",
     "📈 Spread Buildup",
     "💰 Fees & Proceeds",
     "🔍 Comps Analysis",
     "📊 Sensitivity",
+])
+
+st.html(f'''<div style="height:6px;"></div>''')
+
+# ── ROW 2: Analysis & Education tabs ─────────────────────────────────────────
+tab6, tab7 = st.tabs([
     "📐 Risk Metrics",
-    "🎓 Learn"
+    "🎓 Learn",
 ])
 
 # =============================================================================
