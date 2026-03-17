@@ -40,6 +40,23 @@ st.html(f"""
     background: {BG_GRAD};
     color: {TXT};
   }}
+  /* Global text — ensure all p/span/div have contrast */
+  .stApp p, .stApp span, .stApp div {{
+    color: {TXT};
+  }}
+  /* Main content area text */
+  [data-testid="stMainBlockContainer"] p,
+  [data-testid="stMainBlockContainer"] span:not(.st-emotion-cache-hidden) {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  /* Headings inside main */
+  [data-testid="stMainBlockContainer"] h1,
+  [data-testid="stMainBlockContainer"] h2,
+  [data-testid="stMainBlockContainer"] h3 {{
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+  }}
   /* Sidebar */
   [data-testid="stSidebar"] {{
     background: linear-gradient(180deg,#0a1628,#112240,#0d1f3c) !important;
@@ -156,29 +173,95 @@ st.html(f"""
   }}
   .stTabs [data-baseweb="tab"] {{
     background: transparent;
-    color: {MUTED} !important;
+    color: #c8d6f0 !important;
+    -webkit-text-fill-color: #c8d6f0 !important;
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.85rem;
+    opacity: 1 !important;
+  }}
+  .stTabs [data-baseweb="tab"] p,
+  .stTabs [data-baseweb="tab"] span,
+  .stTabs [data-baseweb="tab"] div {{
+    color: #c8d6f0 !important;
+    -webkit-text-fill-color: #c8d6f0 !important;
+    opacity: 1 !important;
   }}
   .stTabs [aria-selected="true"] {{
     background: {DARK_BLUE} !important;
     color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
     border-bottom: 2px solid {GOLD} !important;
   }}
-  /* Dataframe */
-  .stDataFrame {{ border: 1px solid {MID_BLUE}; border-radius: 8px; }}
-  /* Metrics */
-  [data-testid="metric-container"] {{
-    background: {CARD_BG};
-    border: 1px solid {MID_BLUE};
-    border-radius: 10px;
-    padding: 12px;
-  }}
-  [data-testid="metric-container"] label {{ color: {MUTED} !important; }}
-  [data-testid="metric-container"] [data-testid="stMetricValue"] {{
+  .stTabs [aria-selected="true"] p,
+  .stTabs [aria-selected="true"] span,
+  .stTabs [aria-selected="true"] div {{
     color: {GOLD} !important;
-    font-size: 1.4rem !important;
+    -webkit-text-fill-color: {GOLD} !important;
+  }}
+  /* Dataframe / Tables — full contrast */
+  .stDataFrame {{ border: 1px solid {MID_BLUE}; border-radius: 8px; overflow: hidden; }}
+  /* Table headers */
+  .stDataFrame thead th,
+  .stDataFrame [data-testid="glideDataEditor"] .gdg-header,
+  [data-testid="stDataFrameResizable"] th,
+  [data-testid="stDataFrameResizable"] [role="columnheader"] {{
+    background: {DARK_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid {GOLD}66 !important;
+  }}
+  /* Table cells */
+  .stDataFrame tbody td,
+  [data-testid="stDataFrameResizable"] td,
+  [data-testid="stDataFrameResizable"] [role="gridcell"] {{
+    background: {CARD_BG} !important;
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+    border-bottom: 1px solid {MID_BLUE}44 !important;
+    font-size: 0.83rem !important;
+  }}
+  /* Alternating rows */
+  .stDataFrame tbody tr:nth-child(even) td,
+  [data-testid="stDataFrameResizable"] tr:nth-child(even) [role="gridcell"] {{
+    background: #0d1f3c !important;
+  }}
+  /* Glide data editor canvas text */
+  .gdg-cell, .gdg-cell span, .gdg-cell div {{
+    color: {TXT} !important;
+    -webkit-text-fill-color: {TXT} !important;
+  }}
+  /* Metrics — full contrast */
+  [data-testid="metric-container"] {{
+    background: {CARD_BG} !important;
+    border: 1px solid {MID_BLUE} !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+  }}
+  [data-testid="metric-container"] label,
+  [data-testid="metric-container"] [data-testid="stMetricLabel"],
+  [data-testid="metric-container"] [data-testid="stMetricLabel"] p,
+  [data-testid="metric-container"] [data-testid="stMetricLabel"] div {{
+    color: {LT_BLUE} !important;
+    -webkit-text-fill-color: {LT_BLUE} !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+  }}
+  [data-testid="metric-container"] [data-testid="stMetricValue"],
+  [data-testid="metric-container"] [data-testid="stMetricValue"] div {{
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+  }}
+  [data-testid="metric-container"] [data-testid="stMetricDelta"],
+  [data-testid="metric-container"] [data-testid="stMetricDelta"] div,
+  [data-testid="metric-container"] [data-testid="stMetricDelta"] p {{
+    opacity: 1 !important;
+    font-size: 0.75rem !important;
   }}
   /* Divider */
   hr {{ border-color: {GOLD}44 !important; }}
@@ -475,9 +558,24 @@ with tab1:
                      str(trade_date), str(settle_date), str(maturity_date), f"{tenor:.2f} yrs"]
         }
         df_deal = pd.DataFrame(deal_data)
-        st.dataframe(df_deal, use_container_width=True, hide_index=True,
-                     column_config={"Parameter": st.column_config.TextColumn(width="medium"),
-                                    "Value": st.column_config.TextColumn(width="medium")})
+        rows_html = "".join([
+            f'''<tr style="background:{"#0d1f3c" if i%2==0 else CARD_BG}; border-bottom:1px solid {MID_BLUE}33;">
+              <td style="padding:8px 14px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; font-size:0.82rem; font-weight:600;">{row["Parameter"]}</td>
+              <td style="padding:8px 14px; color:#ffffff; -webkit-text-fill-color:#ffffff; font-size:0.82rem;">{row["Value"]}</td>
+            </tr>'''
+            for i, row in df_deal.iterrows()
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Parameter</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Value</th>
+            </tr></thead>
+            <tbody>{rows_html}</tbody>
+          </table>
+        </div>
+        """)
 
     with col_right:
         st.html(f'<div style="color:{GOLD}; font-size:0.9rem; font-weight:700; margin-bottom:10px; user-select:none;">🎯 Pricing Outputs</div>')
@@ -494,9 +592,24 @@ with tab1:
                      f"{all_in_cost*100:.4f}%"]
         }
         df_price = pd.DataFrame(price_data)
-        st.dataframe(df_price, use_container_width=True, hide_index=True,
-                     column_config={"Output": st.column_config.TextColumn(width="medium"),
-                                    "Value": st.column_config.TextColumn(width="medium")})
+        rows_html2 = "".join([
+            f'''<tr style="background:{"#0d1f3c" if i%2==0 else CARD_BG}; border-bottom:1px solid {MID_BLUE}33;">
+              <td style="padding:8px 14px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; font-size:0.82rem; font-weight:600;">{row["Output"]}</td>
+              <td style="padding:8px 14px; color:{GOLD if "YTM" in row["Output"] or "Coupon" in row["Output"] or "Price" in row["Output"] else "#ffffff"}; -webkit-text-fill-color:{GOLD if "YTM" in row["Output"] or "Coupon" in row["Output"] or "Price" in row["Output"] else "#ffffff"}; font-size:0.82rem; font-weight:{"700" if "YTM" in row["Output"] else "400"};">{row["Value"]}</td>
+            </tr>'''
+            for i, row in df_price.iterrows()
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Output</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Value</th>
+            </tr></thead>
+            <tbody>{rows_html2}</tbody>
+          </table>
+        </div>
+        """)
 
     # Bookbuilding summary
     st.divider()
@@ -521,7 +634,35 @@ with tab1:
                    "Tightening on strong orders",
                    "Final pricing — deal complete"]
     }
-    st.dataframe(pd.DataFrame(bk_data), use_container_width=True, hide_index=True)
+    bk_rows = ""
+    bk_colors = [MID_BLUE+"33", "#0d1f3c", DARK_BLUE+"55"]
+    for i, stage in enumerate(bk_data["Stage"]):
+        row_bg = bk_colors[i]
+        is_final = i == 2
+        bk_rows += f"""
+        <tr style="background:{row_bg}; border-bottom:1px solid {MID_BLUE}44;">
+          <td style="padding:10px 14px; color:{'#ffffff' if is_final else TXT}; font-weight:{'700' if is_final else '400'}; -webkit-text-fill-color:{'#ffffff' if is_final else TXT};">{stage}</td>
+          <td style="padding:10px 14px; color:{GOLD}; font-weight:700; -webkit-text-fill-color:{GOLD}; text-align:right;">{bk_data["Spread (bps)"][i]}</td>
+          <td style="padding:10px 14px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; text-align:right;">{bk_data["YTM (%)"][i]}</td>
+          <td style="padding:10px 14px; color:{GREEN if i>0 else MUTED}; -webkit-text-fill-color:{GREEN if i>0 else MUTED}; font-weight:{'700' if i>0 else '400'};">{bk_data["Change from IPT"][i]}</td>
+          <td style="padding:10px 14px; color:{MUTED}; -webkit-text-fill-color:{MUTED}; font-size:0.82rem;">{bk_data["Signal"][i]}</td>
+        </tr>"""
+    st.html(f"""
+    <div style="overflow-x:auto; border-radius:10px; border:1px solid {MID_BLUE}; margin-top:4px; user-select:none;">
+      <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+        <thead>
+          <tr style="background:{DARK_BLUE}; border-bottom:2px solid {GOLD}55;">
+            <th style="padding:10px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.8rem; font-weight:700; text-align:left;">Stage</th>
+            <th style="padding:10px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.8rem; font-weight:700; text-align:right;">Spread (bps)</th>
+            <th style="padding:10px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.8rem; font-weight:700; text-align:right;">YTM (%)</th>
+            <th style="padding:10px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.8rem; font-weight:700;">Change from IPT</th>
+            <th style="padding:10px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.8rem; font-weight:700;">Signal</th>
+          </tr>
+        </thead>
+        <tbody>{bk_rows}</tbody>
+      </table>
+    </div>
+    """)
 
     # Issuer savings
     annual_saving = (ipt_spread - reoffer_spread) / 10000 * notional
@@ -561,7 +702,29 @@ with tab2:
             ]
         }
         df_spread = pd.DataFrame(spread_data)
-        st.dataframe(df_spread, use_container_width=True, hide_index=True)
+        is_total = [False, False, False, False, False, True]
+        s_rows = "".join([
+            f'''<tr style="background:{GOLD+"22" if is_total[i] else ("#0d1f3c" if i%2==0 else CARD_BG)}; border-bottom:1px solid {MID_BLUE}33; border-top:{"2px solid "+GOLD+"66" if is_total[i] else "none"};">
+              <td style="padding:9px 14px; color:{GOLD if is_total[i] else LT_BLUE}; -webkit-text-fill-color:{GOLD if is_total[i] else LT_BLUE}; font-weight:{"700" if is_total[i] else "400"}; font-size:0.82rem;">{row["Component"]}</td>
+              <td style="padding:9px 14px; color:{GOLD if is_total[i] else "#ffffff"}; -webkit-text-fill-color:{GOLD if is_total[i] else "#ffffff"}; font-weight:{"700" if is_total[i] else "400"}; text-align:right;">{row["bps"]}</td>
+              <td style="padding:9px 14px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; text-align:right;">{row["(%)"]}</td>
+              <td style="padding:9px 14px; color:{MUTED}; -webkit-text-fill-color:{MUTED}; font-size:0.78rem;">{row["Notes"]}</td>
+            </tr>'''
+            for i, row in df_spread.iterrows()
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Component</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">bps</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">%</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Notes</th>
+            </tr></thead>
+            <tbody>{s_rows}</tbody>
+          </table>
+        </div>
+        """)
 
         # Total spread formula display
         st.html(f"""
@@ -629,19 +792,34 @@ with tab3:
 
     with col_l:
         st.html(f'<div style="color:{GOLD}; font-size:0.9rem; font-weight:700; margin-bottom:10px; user-select:none;">💸 Fee Structure</div>')
-        fee_data = {
-            "Fee Component": ["Management Fee", "Underwriting Fee", "Selling Concession",
-                              "Total Fees (Gross Spread)"],
-            "Rate (%)": [f"{mgmt_fee:.2f}%", f"{uwrt_fee:.2f}%", f"{sell_conc:.2f}%",
-                         f"{mgmt_fee+uwrt_fee+sell_conc:.2f}%"],
-            f"Amount ({curr_sym}mm)": [f"{curr_sym}{notional*mgmt_fee/100:.3f}mm",
-                                       f"{curr_sym}{notional*uwrt_fee/100:.3f}mm",
-                                       f"{curr_sym}{notional*sell_conc/100:.3f}mm",
-                                       f"{curr_sym}{total_fees:.3f}mm"],
-            "Recipient": ["Lead bookrunners", "All underwriters",
-                          "All syndicate banks", "Banking syndicate"]
-        }
-        st.dataframe(pd.DataFrame(fee_data), use_container_width=True, hide_index=True)
+        fee_rows_data = [
+            ("Management Fee",          f"{mgmt_fee:.2f}%",              f"{curr_sym}{notional*mgmt_fee/100:.3f}mm",  "Lead bookrunners",   False),
+            ("Underwriting Fee",        f"{uwrt_fee:.2f}%",              f"{curr_sym}{notional*uwrt_fee/100:.3f}mm",  "All underwriters",   False),
+            ("Selling Concession",      f"{sell_conc:.2f}%",             f"{curr_sym}{notional*sell_conc/100:.3f}mm", "All syndicate banks",False),
+            ("Total Fees (Gross Spread)",f"{mgmt_fee+uwrt_fee+sell_conc:.2f}%",f"{curr_sym}{total_fees:.3f}mm",    "Banking syndicate",  True),
+        ]
+        f_rows = "".join([
+            f'''<tr style="background:{GOLD+"22" if is_tot else ("#0d1f3c" if i%2==0 else CARD_BG)}; border-bottom:1px solid {MID_BLUE}33; border-top:{"2px solid "+GOLD+"66" if is_tot else "none"};">
+              <td style="padding:9px 14px; color:{GOLD if is_tot else LT_BLUE}; -webkit-text-fill-color:{GOLD if is_tot else LT_BLUE}; font-weight:{"700" if is_tot else "400"}; font-size:0.82rem;">{comp}</td>
+              <td style="padding:9px 14px; color:#ffffff; -webkit-text-fill-color:#ffffff; text-align:right;">{rate}</td>
+              <td style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-weight:{"700" if is_tot else "400"}; text-align:right;">{amt}</td>
+              <td style="padding:9px 14px; color:{MUTED}; -webkit-text-fill-color:{MUTED}; font-size:0.78rem;">{recip}</td>
+            </tr>'''
+            for i,(comp,rate,amt,recip,is_tot) in enumerate(fee_rows_data)
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Fee Component</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Rate (%)</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Amount</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Recipient</th>
+            </tr></thead>
+            <tbody>{f_rows}</tbody>
+          </table>
+        </div>
+        """)
 
     with col_r:
         st.html(f'<div style="color:{GOLD}; font-size:0.9rem; font-weight:700; margin-bottom:10px; user-select:none;">🏦 Proceeds Waterfall</div>')
@@ -663,11 +841,33 @@ with tab3:
                 net_proceeds
             ]
         }
-        df_p = pd.DataFrame(proceeds_data)
-        df_p[f"Amount ({curr_sym}mm)"] = df_p[f"Amount ({curr_sym}mm)"].apply(
-            lambda x: f"{curr_sym}{x:+,.3f}mm" if x != 0 else f"{curr_sym}0.000mm"
-        )
-        st.dataframe(df_p, use_container_width=True, hide_index=True)
+        proc_rows_list = [
+            ("Face Value / Notional",            notional,                        False),
+            ("Premium / (Discount) from par",    gross_proceeds - notional,       False),
+            ("Gross Proceeds",                   gross_proceeds,                  False),
+            ("Less: Management Fee",             -(notional*mgmt_fee/100),        False),
+            ("Less: Underwriting Fee",           -(notional*uwrt_fee/100),        False),
+            ("Less: Selling Concession",         -(notional*sell_conc/100),       False),
+            ("Net Proceeds to Issuer",           net_proceeds,                    True),
+        ]
+        pr_rows = "".join([
+            f'''<tr style="background:{GOLD+"22" if is_tot else ("#0d1f3c" if i%2==0 else CARD_BG)}; border-bottom:1px solid {MID_BLUE}33; border-top:{"2px solid "+GOLD+"66" if is_tot else "none"};">
+              <td style="padding:9px 14px; color:{GOLD if is_tot else LT_BLUE}; -webkit-text-fill-color:{GOLD if is_tot else LT_BLUE}; font-weight:{"700" if is_tot else "400"}; font-size:0.82rem;">{label}</td>
+              <td style="padding:9px 14px; color:{GOLD if is_tot else (GREEN if val>0 else (RED if val<0 else "#ffffff"))}; -webkit-text-fill-color:{GOLD if is_tot else (GREEN if val>0 else (RED if val<0 else "#ffffff"))}; font-weight:{"700" if is_tot else "400"}; text-align:right;">{curr_sym}{val:+,.3f}mm</td>
+            </tr>'''
+            for i,(label,val,is_tot) in enumerate(proc_rows_list)
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Item</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Amount ({curr_sym}mm)</th>
+            </tr></thead>
+            <tbody>{pr_rows}</tbody>
+          </table>
+        </div>
+        """)
 
     st.divider()
 
@@ -965,25 +1165,34 @@ with tab6:
 
     with col_l:
         st.html(f'<div style="color:{GOLD}; font-size:0.85rem; font-weight:700; margin-bottom:8px; user-select:none;">📊 Duration & Risk Summary</div>')
-        risk_data = {
-            "Metric": ["Macaulay Duration", "Modified Duration", "Spread Duration",
-                      "DV01 (per $1mm notional)",
-                      f"Total DV01 ({curr_sym}{notional:,.0f}mm)",
-                      "Convexity"],
-            "Value": [f"{mac_dur:.4f} yrs", f"{mod_dur:.4f}", f"{mod_dur:.4f}",
-                     f"{curr_sym}{dv01:.2f}",
-                     f"{curr_sym}{dv01*notional:,.1f}",
-                     f"{convexity:.2f}"],
-            "Interpretation": [
-                f"Avg time to recover investment",
-                f"% price Δ per 100 bps yield change",
-                f"Same as mod. duration (fixed-rate bond)",
-                f"{curr_sym}{dv01:.2f} price change per 1 bp",
-                f"Total portfolio DV01",
-                "Positive convexity favours investor"
-            ]
-        }
-        st.dataframe(pd.DataFrame(risk_data), use_container_width=True, hide_index=True)
+        risk_rows_data = [
+            ("Macaulay Duration",             f"{mac_dur:.4f} yrs",        "Avg time to recover investment"),
+            ("Modified Duration",             f"{mod_dur:.4f}",            "% price change per 100 bps yield change"),
+            ("Spread Duration",               f"{mod_dur:.4f}",            "Same as mod. duration (fixed-rate bond)"),
+            (f"DV01 (per {curr_sym}1mm)",     f"{curr_sym}{dv01:.2f}",     f"Dollar change per 1 bp move"),
+            (f"Total DV01 ({curr_sym}{notional:,.0f}mm)", f"{curr_sym}{dv01*notional:,.1f}", "Full portfolio DV01"),
+            ("Convexity",                     f"{convexity:.2f}",          "Positive convexity favours investor"),
+        ]
+        rm_rows = "".join([
+            f'''<tr style="background:{"#0d1f3c" if i%2==0 else CARD_BG}; border-bottom:1px solid {MID_BLUE}33;">
+              <td style="padding:9px 14px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; font-size:0.82rem; font-weight:600;">{m}</td>
+              <td style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.82rem; font-weight:700; text-align:right;">{v}</td>
+              <td style="padding:9px 14px; color:{MUTED}; -webkit-text-fill-color:{MUTED}; font-size:0.78rem;">{interp}</td>
+            </tr>'''
+            for i,(m,v,interp) in enumerate(risk_rows_data)
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Metric</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Value</th>
+              <th style="padding:9px 14px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:left;">Interpretation</th>
+            </tr></thead>
+            <tbody>{rm_rows}</tbody>
+          </table>
+        </div>
+        """)
 
         # Price impact table
         st.html(f'<div style="color:{GOLD}; font-size:0.85rem; font-weight:700; margin:14px 0 8px; user-select:none;">💥 Price Impact at Different Yield Moves</div>')
@@ -1000,7 +1209,31 @@ with tab6:
                 "Total Δ Price": f"{total_change:+.3f}",
                 f"Δ Proceeds ({curr_sym}mm)": f"{notional*total_change/100:+.2f}"
             })
-        st.dataframe(pd.DataFrame(impact_rows), use_container_width=True, hide_index=True)
+        impact_df = pd.DataFrame(impact_rows)
+        imp_rows_html = "".join([
+            f'''<tr style="background:{"#0d1f3c" if i%2==0 else CARD_BG}; border-bottom:1px solid {MID_BLUE}33;">
+              <td style="padding:8px 12px; color:{GREEN if int(row["Yield Move (bps)"].replace("+","")) < 0 else RED if int(row["Yield Move (bps)"].replace("+","")) > 0 else GOLD}; -webkit-text-fill-color:{GREEN if int(row["Yield Move (bps)"].replace("+","")) < 0 else RED if int(row["Yield Move (bps)"].replace("+","")) > 0 else GOLD}; font-weight:700; text-align:right;">{row["Yield Move (bps)"]}</td>
+              <td style="padding:8px 12px; color:{TXT}; -webkit-text-fill-color:{TXT}; text-align:right;">{row["Duration Effect"]}</td>
+              <td style="padding:8px 12px; color:{LT_BLUE}; -webkit-text-fill-color:{LT_BLUE}; text-align:right;">{row["Convexity Adj."]}</td>
+              <td style="padding:8px 12px; color:{GREEN if float(row["Total Δ Price"].replace("+","")) > 0 else RED}; -webkit-text-fill-color:{GREEN if float(row["Total Δ Price"].replace("+","")) > 0 else RED}; font-weight:700; text-align:right;">{row["Total Δ Price"]}</td>
+              <td style="padding:8px 12px; color:{GREEN if "+" in row[list(row.keys())[-1]] else RED}; -webkit-text-fill-color:{GREEN if "+" in row[list(row.keys())[-1]] else RED}; text-align:right;">{row[list(row.keys())[-1]]}</td>
+            </tr>'''
+            for i, row in enumerate(impact_rows)
+        ])
+        st.html(f"""
+        <div style="border-radius:10px; border:1px solid {MID_BLUE}; overflow:hidden; user-select:none;">
+          <table style="width:100%; border-collapse:collapse; background:{CARD_BG};">
+            <thead><tr style="background:{DARK_BLUE};">
+              <th style="padding:9px 12px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Yield Move (bps)</th>
+              <th style="padding:9px 12px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Duration Effect</th>
+              <th style="padding:9px 12px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Convexity Adj.</th>
+              <th style="padding:9px 12px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Total Δ Price</th>
+              <th style="padding:9px 12px; color:{GOLD}; -webkit-text-fill-color:{GOLD}; font-size:0.78rem; font-weight:700; text-align:right;">Δ Proceeds</th>
+            </tr></thead>
+            <tbody>{imp_rows_html}</tbody>
+          </table>
+        </div>
+        """)
 
     with col_r:
         st.html(f'<div style="color:{GOLD}; font-size:0.85rem; font-weight:700; margin-bottom:8px; user-select:none;">📈 Price-Yield Relationship</div>')
