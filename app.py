@@ -85,6 +85,45 @@ st.html(f"""
   [data-testid="stSidebar"] [data-testid="InputInstructions"] {{
     color: {MUTED} !important;
   }}
+  /* Sidebar selectbox closed state text */
+  [data-testid="stSidebar"] [data-baseweb="select"] * {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background-color: #0a1628 !important;
+  }}
+  /* Sidebar selectbox container */
+  [data-testid="stSidebar"] [data-baseweb="select"] > div {{
+    background: #0a1628 !important;
+    border: 1px solid {MID_BLUE} !important;
+  }}
+  /* Open dropdown list — MUST be white text on dark bg */
+  ul[role="listbox"],
+  div[role="listbox"],
+  [data-baseweb="popover"] [role="listbox"] {{
+    background: #071120 !important;
+    border: 1px solid {GOLD}88 !important;
+  }}
+  li[role="option"],
+  [data-baseweb="menu"] [role="option"],
+  [data-baseweb="list-item"] {{
+    background: #071120 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  li[role="option"]:hover,
+  li[aria-selected="true"],
+  [data-baseweb="menu"] li[aria-selected="true"] {{
+    background: {DARK_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+  }}
+  /* Placeholder text inside closed selectbox */
+  [data-baseweb="select"] input,
+  [data-baseweb="select"] input::placeholder {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+  }}
   /* Data editor / tables */
   .stDataFrame td, .stDataFrame th {{
     color: {TXT} !important;
@@ -164,40 +203,65 @@ st.html(f"""
   .stSlider [data-testid="stTickBarMax"] {{
     color: {MUTED} !important;
   }}
-  /* Tabs */
+  /* Tabs — gold active, bright inactive */
   .stTabs [data-baseweb="tab-list"] {{
-    background: #0d1f3c;
-    border-radius: 8px;
-    gap: 4px;
-    padding: 4px;
+    background: #071120;
+    border-radius: 10px;
+    gap: 3px;
+    padding: 5px;
+    border: 1px solid {MID_BLUE}66;
   }}
+  /* Inactive tab */
   .stTabs [data-baseweb="tab"] {{
-    background: transparent;
-    color: #c8d6f0 !important;
-    -webkit-text-fill-color: #c8d6f0 !important;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85rem;
+    background: #0d1f3c !important;
+    color: #cdd8f0 !important;
+    -webkit-text-fill-color: #cdd8f0 !important;
+    border-radius: 7px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
     opacity: 1 !important;
+    padding: 6px 12px !important;
+    border: 1px solid {MID_BLUE}44 !important;
+    transition: all 0.15s !important;
   }}
+  .stTabs [data-baseweb="tab"] *,
   .stTabs [data-baseweb="tab"] p,
   .stTabs [data-baseweb="tab"] span,
   .stTabs [data-baseweb="tab"] div {{
-    color: #c8d6f0 !important;
-    -webkit-text-fill-color: #c8d6f0 !important;
+    color: #cdd8f0 !important;
+    -webkit-text-fill-color: #cdd8f0 !important;
     opacity: 1 !important;
   }}
-  .stTabs [aria-selected="true"] {{
-    background: {DARK_BLUE} !important;
-    color: {GOLD} !important;
-    -webkit-text-fill-color: {GOLD} !important;
-    border-bottom: 2px solid {GOLD} !important;
+  /* Inactive tab hover */
+  .stTabs [data-baseweb="tab"]:hover {{
+    background: {MID_BLUE} !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border-color: {GOLD}55 !important;
   }}
+  /* ACTIVE tab — GOLD background */
+  .stTabs [aria-selected="true"],
+  .stTabs [data-baseweb="tab"][aria-selected="true"] {{
+    background: {GOLD} !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    border: 1px solid {GOLD} !important;
+    border-radius: 7px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 8px {GOLD}55 !important;
+  }}
+  .stTabs [aria-selected="true"] *,
   .stTabs [aria-selected="true"] p,
   .stTabs [aria-selected="true"] span,
   .stTabs [aria-selected="true"] div {{
-    color: {GOLD} !important;
-    -webkit-text-fill-color: {GOLD} !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    opacity: 1 !important;
+  }}
+  /* Remove Streamlit's default bottom border underline on active tab */
+  .stTabs [data-baseweb="tab-highlight"] {{
+    display: none !important;
+    background: transparent !important;
   }}
   /* Dataframe / Tables — full contrast */
   .stDataFrame {{ border: 1px solid {MID_BLUE}; border-radius: 8px; overflow: hidden; }}
@@ -265,6 +329,44 @@ st.html(f"""
   }}
   /* Divider */
   hr {{ border-color: {GOLD}44 !important; }}
+
+  /* ═══ DROPDOWN / SELECTBOX — full contrast ═══ */
+  /* The open dropdown list panel */
+  [data-baseweb="popover"],
+  [data-baseweb="popover"] ul,
+  [data-baseweb="menu"],
+  [data-baseweb="menu"] ul {{
+    background: #0a1628 !important;
+    border: 1px solid {GOLD}88 !important;
+    border-radius: 8px !important;
+  }}
+  /* Each option in the list */
+  [data-baseweb="menu"] li,
+  [data-baseweb="option"],
+  [data-baseweb="popover"] li {{
+    background: #0a1628 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: 0.85rem !important;
+  }}
+  /* Highlighted / hovered option */
+  [data-baseweb="menu"] li:hover,
+  [data-baseweb="option"]:hover,
+  [aria-selected="true"][data-baseweb="option"] {{
+    background: {DARK_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+  }}
+  /* Currently selected item shown in the closed selectbox */
+  [data-baseweb="select"] [data-testid="stSelectbox"],
+  [data-baseweb="select"] div[class*="valueContainer"] span,
+  [data-baseweb="select"] div[class*="singleValue"],
+  [data-baseweb="select"] > div > div > div {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  /* Dropdown arrow */
+  [data-baseweb="select"] svg {{ fill: {GOLD} !important; }}
   /* Scrollbar */
   ::-webkit-scrollbar {{ width: 6px; background: #0a1628; }}
   ::-webkit-scrollbar-thumb {{ background: {MID_BLUE}; border-radius: 3px; }}
