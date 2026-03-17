@@ -1,3 +1,4 @@
+
 # =============================================================================
 # THE MOUNTAIN PATH — WORLD OF FINANCE
 # Bond Primary Market Issue Pricing Model
@@ -45,15 +46,106 @@ st.html(f"""
     border-right: 1px solid {GOLD}33;
   }}
   [data-testid="stSidebar"] * {{ color: {TXT} !important; }}
-  /* Inputs */
-  .stNumberInput input, .stTextInput input, .stSelectbox select {{
-    background: #0d1f3c !important;
+  /* Sidebar input text — force white */
+  [data-testid="stSidebar"] input {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #0a1628 !important;
+  }}
+  [data-testid="stSidebar"] [data-baseweb="select"] > div {{
+    background: #0a1628 !important;
+    color: #ffffff !important;
+  }}
+  [data-testid="stSidebar"] [data-baseweb="select"] span {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  [data-testid="stSidebar"] .stDateInput input {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: #0a1628 !important;
+  }}
+  [data-testid="stSidebar"] [data-testid="InputInstructions"] {{
+    color: {MUTED} !important;
+  }}
+  /* Data editor / tables */
+  .stDataFrame td, .stDataFrame th {{
     color: {TXT} !important;
+  }}
+  [data-testid="data-grid-canvas"] {{
+    color: {TXT} !important;
+  }}
+  /* General all text inputs anywhere */
+  input[type="text"], input[type="number"], input[class*="st-"] {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  /* Placeholder text */
+  input::placeholder {{
+    color: {MUTED} !important;
+    -webkit-text-fill-color: {MUTED} !important;
+    opacity: 0.7;
+  }}
+  /* Inputs — high contrast text */
+  .stTextInput input,
+  .stNumberInput input,
+  .stDateInput input {{
+    background: #0d1f3c !important;
+    color: #ffffff !important;
+    border: 1px solid {MID_BLUE} !important;
+    border-radius: 6px !important;
+    caret-color: {GOLD} !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  /* Select boxes */
+  .stSelectbox > div > div {{
+    background: #0d1f3c !important;
+    border: 1px solid {MID_BLUE} !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+  }}
+  .stSelectbox > div > div > div {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  /* Dropdown options */
+  [data-baseweb="select"] span,
+  [data-baseweb="select"] div,
+  [data-baseweb="popover"] li {{
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }}
+  /* Number input */
+  .stNumberInput > div {{
+    background: #0d1f3c !important;
     border: 1px solid {MID_BLUE} !important;
     border-radius: 6px !important;
   }}
+  /* Date input */
+  .stDateInput > div > div > input {{
+    background: #0d1f3c !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid {MID_BLUE} !important;
+    border-radius: 6px !important;
+  }}
+  /* Labels above inputs */
+  .stTextInput label,
+  .stNumberInput label,
+  .stSelectbox label,
+  .stDateInput label,
+  .stSlider label {{
+    color: {LT_BLUE} !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+  }}
+  /* Slider */
   .stSlider > div > div > div {{
     background: {GOLD} !important;
+  }}
+  .stSlider [data-testid="stTickBarMin"],
+  .stSlider [data-testid="stTickBarMax"] {{
+    color: {MUTED} !important;
   }}
   /* Tabs */
   .stTabs [data-baseweb="tab-list"] {{
