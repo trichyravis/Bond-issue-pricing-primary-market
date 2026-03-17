@@ -171,11 +171,54 @@ st.html(f"""
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
   }}
-  /* Number input */
+  /* Number input container */
   .stNumberInput > div {{
     background: #0d1f3c !important;
     border: 1px solid {MID_BLUE} !important;
     border-radius: 6px !important;
+  }}
+  /* +/- stepper buttons */
+  .stNumberInput button,
+  .stNumberInput [data-testid="stNumberInputStepDown"],
+  .stNumberInput [data-testid="stNumberInputStepUp"],
+  [data-testid="stNumberInput"] button {{
+    background: {DARK_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+    border: 1px solid {GOLD}88 !important;
+    border-radius: 4px !important;
+    font-weight: 900 !important;
+    font-size: 1.1rem !important;
+    opacity: 1 !important;
+    min-width: 28px !important;
+  }}
+  .stNumberInput button:hover,
+  [data-testid="stNumberInput"] button:hover {{
+    background: {MID_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+    border-color: {GOLD} !important;
+  }}
+  /* Button SVG icons (+ and - symbols) */
+  .stNumberInput button svg,
+  [data-testid="stNumberInput"] button svg {{
+    fill: {GOLD} !important;
+    stroke: {GOLD} !important;
+    color: {GOLD} !important;
+  }}
+  /* Sidebar specific — same fix */
+  [data-testid="stSidebar"] .stNumberInput button,
+  [data-testid="stSidebar"] [data-testid="stNumberInput"] button {{
+    background: {DARK_BLUE} !important;
+    color: {GOLD} !important;
+    -webkit-text-fill-color: {GOLD} !important;
+    border: 1px solid {GOLD}88 !important;
+    opacity: 1 !important;
+  }}
+  [data-testid="stSidebar"] .stNumberInput button svg,
+  [data-testid="stSidebar"] [data-testid="stNumberInput"] button svg {{
+    fill: {GOLD} !important;
+    stroke: {GOLD} !important;
   }}
   /* Date input */
   .stDateInput > div > div > input {{
